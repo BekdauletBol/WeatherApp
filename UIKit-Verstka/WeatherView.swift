@@ -21,7 +21,7 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
-		view.backgroundColor = .white
+		view.backgroundColor = .progBackground
 		
 		setBannerImage()
 		setTempLabel()
@@ -46,9 +46,9 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 	}
 	
 	private func setTempLabel() {
-		tempLabel.text = "19°C"
+		tempLabel.text = "Vlad Loh"
 		tempLabel.font = .systemFont(ofSize: 36, weight: .bold)
-		tempLabel.textColor = .black
+		tempLabel.textColor = .progText
 		tempLabel.translatesAutoresizingMaskIntoConstraints = false
 		view.addSubview(tempLabel)
 		
@@ -63,9 +63,9 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 		
 		contentView.backgroundColor = .white
 		// City Label
-		cityLabel.text = "Astana"
+		cityLabel.text = "Loading"
 		cityLabel.font = .systemFont(ofSize: 24, weight: .medium)
-		cityLabel.textColor = .black
+		cityLabel.textColor = .progText
 		cityLabel.translatesAutoresizingMaskIntoConstraints = false
 		contentView.addSubview(cityLabel)
 		
@@ -74,8 +74,8 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 		])
 		
 		// Weather Description Label
-		weatherDescription.text = "Sunny"
-		weatherDescription.textColor = .black
+		weatherDescription.text = "Loading"
+		weatherDescription.textColor = .progText
 		weatherDescription.font = .systemFont(ofSize: 18)
 		weatherDescription.translatesAutoresizingMaskIntoConstraints = false
 		contentView.addSubview(weatherDescription) // Исправление: добавляем в contentView
@@ -191,21 +191,27 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 						switch icon {
 						case "01d", "01n":
 							symbolName = "sun.max.fill"
+							self.bannerImage.tintColor = .yellow
 						case "02d", "02n", "03d", "03n", "04d", "04n":
 							symbolName = "cloud.fill"
+							self.bannerImage.tintColor = .progBlue
 						case "09d", "09n", "10d", "10n":
 							symbolName = "cloud.rain.fill"
+							self.bannerImage.tintColor = .gray
 						case "11d", "11n":
 							symbolName = "cloud.bolt.fill"
+							self.bannerImage.tintColor = .darkGray
 						case "13d", "13n":
 							symbolName = "snowflake"
+							self.bannerImage.tintColor = .gray
 						case "50d", "50n":
 							symbolName = "cloud.fog.fill"
+							self.bannerImage.tintColor = .gray
+
 						default:
 							symbolName = "cloud"
 						}
 						self.bannerImage.image = UIImage(systemName: symbolName)
-						self.bannerImage.tintColor = .yellow
 					}
 				}
 			} catch {
@@ -227,5 +233,6 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 		view.endEditing(true)
 	}
 }
+
 
 
