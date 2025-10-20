@@ -19,6 +19,7 @@ class ViewController: UIViewController {
 		setTempLabel()
 		setContentView()
 		setRefreshButton()
+		//
 	}
 	
 	private func setBannerImage() {
