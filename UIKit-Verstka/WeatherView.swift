@@ -11,6 +11,7 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 	private let weatherDescription = UILabel()
 	private let contentView = ViewBuilder.shared.contentView
 	private let cityTextField = UITextField()
+	private let TempLabelfahrenheit = UILabel()
 	
 	
 	//API
@@ -25,6 +26,7 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 		
 		setBannerImage()
 		setTempLabel()
+		setTempLabelfahrenheit()
 		setContentView()
 		setRefreshButton()
 		setCityTextField()
@@ -46,7 +48,7 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 	}
 	
 	private func setTempLabel() {
-		tempLabel.text = "Vlad Loh"
+		tempLabel.text = "Loading"
 		tempLabel.font = .systemFont(ofSize: 36, weight: .bold)
 		tempLabel.textColor = .progText
 		tempLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -57,6 +59,23 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 			tempLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
 		])
 	}
+	
+	
+	private func setTempLabelfahrenheit() {
+		TempLabelfahrenheit.font = .systemFont(ofSize: 36, weight: .bold)
+		TempLabelfahrenheit.textColor = .progText
+		TempLabelfahrenheit.translatesAutoresizingMaskIntoConstraints = false
+		view.addSubview(TempLabelfahrenheit)
+		
+		NSLayoutConstraint.activate([
+			TempLabelfahrenheit.topAnchor.constraint(equalTo: tempLabel.bottomAnchor, constant: 20),
+			TempLabelfahrenheit.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+			
+		])
+		
+
+	}
+	
 	
 	private func setContentView() {
 		view.addSubview(contentView)
@@ -70,7 +89,7 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 		contentView.addSubview(cityLabel)
 		
 		NSLayoutConstraint.activate([
-			cityLabel.topAnchor.constraint(equalTo: tempLabel.bottomAnchor,constant: 10)
+			cityLabel.topAnchor.constraint(equalTo: TempLabelfahrenheit.bottomAnchor,constant: 10)
 		])
 		
 		// Weather Description Label
@@ -171,9 +190,12 @@ class WeatherView: UIViewController { //error Invalid redeclaration of 'ViewCont
 					
 					// Температура
 					if let main = json?["main"] as? [String: Any],
-					   let temp = main["temp"] as? Double {
-						self.tempLabel.text = "\(Int(temp))°C"
+					   let tempC = main["temp"] as? Double {
+						self.tempLabel.text = "\(Int(tempC))°C"
+						self.TempLabelfahrenheit.text = "\(Int(tempC * 9/5 + 32))°F"
 					}
+
+					
 					
 					// Город
 					if let city = json?["name"] as? String {
