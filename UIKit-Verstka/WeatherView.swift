@@ -1,4 +1,5 @@
 import UIKit
+import NaturalLanguage
 
 class WeatherView: UIViewController {
 	
@@ -12,6 +13,7 @@ class WeatherView: UIViewController {
 		private let cityTextField = UITextField()
 		private let tempLabelFahrenheit = UILabel()
 		private let backgroundEffectView = UIView()
+	
 		
 		
 		//API
@@ -19,38 +21,40 @@ class WeatherView: UIViewController {
 		private let apiKey = "1e3eef1d7f9da9c80d5c0eeaa6de89b5"
 		private let baseURL = "https://api.openweathermap.org/data/2.5/weather"
 		
-	
-		override func viewDidLoad() {
-			super.viewDidLoad()
-			
-			view.backgroundColor = .progBackground
-			
-			setContentView()
-			setRefreshButton()
-			setupBackgroundEffcet()
-			
-			
-			let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-			view.addGestureRecognizer(tap)
-			
-			func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-					textField.resignFirstResponder()
-					refreshWeather()
-					return true
-				}
-				
-				// Очистка при начале редактирования
-				func textFieldDidBeginEditing(_ textField: UITextField) {
-					if textField.text == "" || textField.text == "Enter city" {
-						textField.text = ""
-					}
-				}
+	// VIEW DID LOAD
+	override func viewDidLoad() {
+		super.viewDidLoad()
+		
+		view.backgroundColor = .progBackground
+		
+		setContentView()
+		setRefreshButton()
+		setupBackgroundEffect()
+		
+		
+		let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+		view.addGestureRecognizer(tap)
+		
+		func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+			textField.resignFirstResponder()
+			refreshWeather()
+			return true
 		}
 		
+		// Очистка при начале редактирования
+		func textFieldDidBeginEditing(_ textField: UITextField) {
+			if textField.text == "" || textField.text == "Enter city" {
+				textField.text = ""
+			}
+		}
+	}
 		
 		private func setContentView(){
-			
+			tabBarController?.tabBarMinimizeBehavior = .onScrollDown
 			bannerImage.image = UIImage(systemName: "sun.max.fill")
+			
+			bannerImage.addSymbolEffect(.pulse) // symbol's effect
+
 			bannerImage.tintColor = .progSun
 			bannerImage.contentMode = .scaleAspectFit
 			
@@ -155,7 +159,7 @@ class WeatherView: UIViewController {
 	
 	// effect via AI these are not my code (only effects not mine)
 	
-	private func setupBackgroundEffcet(){
+	private func setupBackgroundEffect() {
 		backgroundEffectView.translatesAutoresizingMaskIntoConstraints = false
 		view.insertSubview(backgroundEffectView, at: 0) // Под всеми элементами
 		
@@ -165,7 +169,27 @@ class WeatherView: UIViewController {
 			backgroundEffectView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 			backgroundEffectView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 		])
+		
+		// Градиентный слой
+		let gradientLayer = CAGradientLayer()
+		gradientLayer.frame = view.bounds
+		
+		// Цвета градиента (могу поменять под настроение хз зачем)
+		gradientLayer.colors = [
+			UIColor.progBlue.cgColor,
+			UIColor.progAshyqKok.cgColor,
+			UIColor.progOteAshyqKok.cgColor,
+			UIColor.progBackground.cgColor
+		]
+		
+		// Направление — сверху вниз
+		gradientLayer.startPoint = CGPoint(x: 0.5, y: 0)
+		gradientLayer.endPoint = CGPoint(x: 0.5, y: 1)
+		
+		// Добавляем градиент
+		backgroundEffectView.layer.insertSublayer(gradientLayer, at: 0)
 	}
+
 	
 	private func startWeatherAnimation(for icon: String){
 		backgroundEffectView.layer.sublayers?.removeAll()
@@ -249,7 +273,7 @@ class WeatherView: UIViewController {
 								self.bannerImage.tintColor = .yellow
 							case "02d", "02n", "03d", "03n", "04d", "04n":
 								symbolName = "cloud.fill"
-								self.bannerImage.tintColor = .progBlue
+								self.bannerImage.tintColor = .white
 							case "09d", "09n", "10d", "10n":
 								symbolName = "cloud.rain.fill"
 								self.bannerImage.tintColor = .gray
@@ -287,5 +311,9 @@ class WeatherView: UIViewController {
 		@objc func hideKeyboard(){
 			view.endEditing(true)
 		}
+	
+		
+	
 	}
+
 
